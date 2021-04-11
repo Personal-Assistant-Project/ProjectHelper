@@ -295,21 +295,3 @@ class Record(UserDict):
                 else:
                     self.data[value].pop(int(user_input)-1)
                 break
-
-
-
-
-#a = ContactList()
-
-#b = Record()
-#c = Record()
-
-#a.add_contact(b)
-#a.add_contact(c)
-
-#print(a)
-#a.save_csv()
-
-g = ContactList()
-g.load()
-g.print_contact_list()
