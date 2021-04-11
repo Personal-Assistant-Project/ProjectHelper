@@ -106,7 +106,7 @@ def grab_path(path, nest_deep=0):
 def main():
     global GLOBAL_PATH
     #GLOBAL_PATH = r'C:/Users/Polinka/Documents/'
-    GLOBAL_PATH = sys.argv[1]
+    GLOBAL_PATH = input('Please enter the folder to do sorting: ')
     grab_path(GLOBAL_PATH)
 
     print("______________________________________________________________")
