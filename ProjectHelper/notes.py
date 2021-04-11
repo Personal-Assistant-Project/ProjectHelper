@@ -4,6 +4,7 @@ import os.path
 
 class NoteList:
     
+    
     def add_note(self):
         user_inp_subj = input('Subject: ' )
         user_inp_text = input('Text: ')
@@ -14,19 +15,24 @@ class NoteList:
                 note_add.write('%s: %s \n' % (item[0], item[1]))
                 print('Done')
 
-    def find_tegs(self):
-        need_tegs = input('what tegs? ')
+                
+    def find_teg(self):
+        need_tegs = input('Enter teg you want to find: ')
+        count = 0
         with open('note.txt', 'r') as find_note_tegs:
             find_note_tegs = find_note_tegs.readlines()
             for i in iter(find_note_tegs):
                 if need_tegs in i:
                     print(i)
+                    count += 1
+            if count == 0:
+                print('This teg is not in the notes')
 
-    def change_note(self):
-
+                
+    def change_notes(self):
         with open('note.txt', 'r+') as f:
-            old_text = input('what text you want change in note? ')
-            new_text = input('for what text you want change in note? ')
+            old_text = input('Enter text you want to change in the notes: ')
+            new_text = input('Please enter new text: ')
             newline=[]
             
             for word in f.readlines():
@@ -36,13 +42,14 @@ class NoteList:
             for line in newline:
                 f.writelines(line)
                 
-    def sort_tegs(self):
-        
+    
+    def sort_notes(self):        
         with open("note.txt", "r+") as f:
             lines = f.readlines()
             lines.sort()        
             f.seek(0)
             f.writelines(lines)
 
+            
 notelist = NoteList()
-notelist.find_tegs()
+notelist.find_teg()
