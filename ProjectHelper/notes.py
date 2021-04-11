@@ -30,18 +30,39 @@ class NoteList:
 
                 
     def change_notes(self):
+        count = 0
         with open('note.txt', 'r+') as f:
             old_text = input('Enter text you want to change in the notes: ')
             new_text = input('Please enter new text: ')
-            newline=[]
+            flag = input('Do you want to change all text ignoring case? Enter 1 if YES, 2 if NO: ')
+            while (flag.strip() != '1' and flag.strip() != '2'):
+                flag = input('Please enter 1 if YES, 2 if NO: ')
+            notes = f.readlines()
+            newline = []
             
-            for word in f.readlines():
-                newline.append(word.replace(old_text, new_text))
+            if flag.strip() == '1':
+                for word in notes:
+                    if old_text.lower() in word.lower():
+                        count += 1
+                        insensitive_old = re.compile(
+                            re.escape(old_text), re.IGNORECASE)
+                        word = insensitive_old.sub(new_text, word)
+                        newline.append(word)
+                    else:
+                        newline.append(word)
+            elif flag.strip() == '2':
+                for word in notes:
+                    newline.append(word.replace(old_text, new_text))
+                    if old_text in word:
+                        count += 1
 
-        with open("note.txt","r+") as f:
-            for line in newline:
-                f.writelines(line)
-                
+        if count != 0:
+            with open("note.txt","r+") as f:
+                for line in newline:
+                    f.writelines(line)
+        else:
+            print('This text is not in the notes')
+            
     
     def sort_notes(self):        
         with open("note.txt", "r+") as f:
@@ -50,6 +71,11 @@ class NoteList:
             f.seek(0)
             f.writelines(lines)
 
-            
+
+    def show_all(self):
+        with open("note.txt", "r") as f:
+            for i in iter(f.readlines()):
+                print(i)            
+
 notelist = NoteList()
 notelist.find_teg()
