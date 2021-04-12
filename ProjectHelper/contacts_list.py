@@ -124,12 +124,17 @@ class ContactList(UserDict):
     def print_contact_list(self):
         print(f'Contact list: {self.name}')
         print(' {:_^105}'.format(''))
+        counter = 0
         
         for i in self.data:
-            print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i,('/ '.join(self.data[i]['phone']))[:26],'/ '.join(self.data[i]['address']),'/ '.join(self.data[i]['mail']),self.data[i]['birthday'].data))
-        print(' {:‾^105}'.format(''))
-
-   
+            print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i[:10],('/ '.join(self.data[i]['phone']))[:27],('/ '.join(self.data[i]['address']))[:27],('/ '.join(self.data[i]['mail']))[:27],self.data[i]['birthday'].data))
+            counter += 1
+            if not counter % 10:
+                print(' {:‾^105}'.format(''))
+                input('Press any key to continue')
+                print(' {:_^105}'.format(''))
+                
+        print(' {:‾^105}'.format('')) 
 
 class Birthday(UserString):
     
