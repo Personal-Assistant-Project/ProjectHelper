@@ -16,29 +16,41 @@ class ContactList(UserDict):
     #find value in ContactList
     def find(self, find_value):
 
-        finded_names = ''
+        finded_names = []
         
         for key, value in self.data.items():
             if find_value in key:
-                finded_names += f'{key}: {self.data[key]}\n'
+                finded_names.append(key)
                 continue
             
             search_values = value['address'] + value['phone'] + value['mail'] + [value['birthday']]
 
             for i in search_values:
                 if find_value in i:
-                    finded_names += f'{key}: {self.data[key]}\n'
+                    finded_names.append(key)
                     break
                 
         if not finded_names:
             print(f'No value {find_value} found')
         else:
-            print(finded_names)
+            print('Finded values in:')
+            counter = 0        
+            print(' {:_^105}'.format(''))
+            print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format('name','phone','address','mail','birthday'))
+            print(' {:‾^105}'.format(''))
+            for i in finded_names:
+                print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i[:10],('/ '.join(self.data[i]['phone']))[:27],('/ '.join(self.data[i]['address']))[:27],('/ '.join(self.data[i]['mail']))[:27],self.data[i]['birthday'].data))
+                counter += 1
+                if not counter % 10:
+                    print(' {:‾^105}'.format(''))
+                    input('Press any key to continue')
+                    print(' {:_^105}'.format(''))
+            print(' {:‾^105}'.format('')) 
 
     #change name in ContactList
     def change_name(self):
         while True:
-            user_input = input('Please enter name to rename: ')
+            user_input = input('Please enter name to rename/delete: ')
             if user_input not in self.data.keys():
                 user_input2 = input('Entered name is not in the contact book.\n1. Try again\n2.return to previous menu?\n')
                 if user_input2 == '1':
@@ -47,9 +59,11 @@ class ContactList(UserDict):
                     break
             else:
                 new_input = input('Enter new name or leave empty to delete contact: ')
-                self.data[new_input] = self.data.pop(user_input)
                 if new_input:
+                    self.data[new_input] = self.data.pop(user_input)
                     self.data[new_input].name = new_input
+                else:
+                    self.data.pop(user_input)
                 break
 
             
@@ -74,7 +88,7 @@ class ContactList(UserDict):
         date_from = date_now + delta_from
         date_to = date_now + delta_to
         
-        finded_contacts = f'Finded contacts with birthdays in range:\n'
+        finded_contacts = []
         for key, value in self.data.items():
             
             #find correct birthday date between from and to
@@ -89,9 +103,22 @@ class ContactList(UserDict):
                 birthday_date = value['birthday'].date.replace(year = date_now.year + 1)
                 
             if date_from < birthday_date < date_to:
-                finded_contacts += f'{key}: {self.data[key]}\n'
+                finded_contacts.append(key)
                 
-        return finded_contacts
+        if not finded_contacts:
+            print(f'No contacts found')
+        else:
+            print('Finded birthdays in:')
+            counter = 0        
+            print(' {:_^105}'.format(''))
+            for i in finded_contacts:
+                print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i[:10],('/ '.join(self.data[i]['phone']))[:27],('/ '.join(self.data[i]['address']))[:27],('/ '.join(self.data[i]['mail']))[:27],self.data[i]['birthday'].data))
+                counter += 1
+                if not counter % 10:
+                    print(' {:‾^105}'.format(''))
+                    input('Press any key to continue')
+                    print(' {:_^105}'.format(''))
+            print(' {:‾^105}'.format(''))
 
     #save contact list
     def save_csv(self):
@@ -114,12 +141,16 @@ class ContactList(UserDict):
     def load(self):
         user_input = input('Enter the name of your Contact List: ')
         self.name = user_input
-        with open(f'{user_input}.csv', newline='') as file:
-            reader = csv.DictReader(file)     
-            for row in reader:
-                key = row.pop('name')
-                loaded_record = Record(name = key, phone = row['phone'].split('&'), address = row['address'].split('&'), mail = row['mail'].split('&'), birthday = Birthday(row['birthday']))
-                self.data[key] = loaded_record
+        try:
+            with open(f'{user_input}.csv', newline='') as file:
+                reader = csv.DictReader(file)     
+                for row in reader:
+                    key = row.pop('name')
+                    loaded_record = Record(name = key, phone = row['phone'].split('&'), address = row['address'].split('&'), mail = row['mail'].split('&'), birthday = Birthday(row['birthday']))
+                    self.data[key] = loaded_record
+            print('Contact list successfully loaded!')
+        except FileNotFoundError:
+            print('File is not exist.')
 
     def print_contact_list(self):
         print(f'Contact list: {self.name}')
@@ -284,6 +315,7 @@ class Record(UserDict):
 
                 if user_input == 'clear':
                     self.data[value].clear()
+                    print(f'{value} Successfully cleared!')
                     break
 
                 data_input = input(f'Enter the correct {value} or leave empty if you want to delete {value}: ')

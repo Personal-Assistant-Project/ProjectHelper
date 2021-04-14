@@ -20,7 +20,7 @@ setuptools.setup(name='personal_assistant',
                  ],
                  entry_points={'console_scripts': [
                      'helper-folder = ProjectHelper.main:main']},
-                 packages=setuptools.find_packages(where="ProjectHelper"),
+                 packages=setuptools.find_packages(),
                  include_package_data=True,
                  python_requires=">=3.6",
                  )
