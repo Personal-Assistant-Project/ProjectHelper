@@ -12,6 +12,15 @@ def log(action):
     print('‾'*100)
     with open('logs.txt', 'a') as file:
         file.write(f'{message}\n')
+
+def readme():
+    print('''This is the helper with the functions:
+1. Create and work with Contacts lists.
+2. Create and work with the notes.
+3. Sorting files in the folders.
+
+You can choose your options in the console.
+Thank you for using our Helper.''')
         
 def main():
     
@@ -24,9 +33,7 @@ def main():
             log('Bye!')
             break
         elif user_input == '4':
-            with open('\README.md','r') as fh:
-                all_file = fh.read()
-                print(all_file)
+            readme()
         elif user_input == '3':
             sort_files.main()
         elif user_input == '2':
