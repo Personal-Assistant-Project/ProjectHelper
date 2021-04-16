@@ -24,7 +24,7 @@ def main():
             log('Bye!')
             break
         elif user_input == '4':
-            with open('\README.md','r') as fh:
+            with open('README.md','r') as fh:
                 all_file = fh.read()
                 print(all_file)
         elif user_input == '3':
