@@ -28,7 +28,7 @@ def main():
                 all_file = fh.read()
                 print(all_file)
         elif user_input == '3':
-            sort_files.main()
+            ProjectHelper.sort_files.main()
         elif user_input == '2':
             n = ProjectHelper.mynote.NoteList()
             while True:
