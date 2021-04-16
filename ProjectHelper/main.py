@@ -35,7 +35,7 @@ def main():
         elif user_input == '4':
             readme()
         elif user_input == '3':
-            sort_files.main()
+            ProjectHelper.sort_files.main()
         elif user_input == '2':
             n = ProjectHelper.mynote.NoteList()
             while True:

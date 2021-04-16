@@ -35,7 +35,6 @@ def normalize(string):
               ord('Я'): 'Ya', ord('Ё'): 'Yo'}
 
     normalized = []
-    # string = string.capitalize()
 
     for c in string:
         if not c.isalpha() and not c.isdigit():
@@ -105,23 +104,29 @@ def grab_path(path, nest_deep=0):
 
 def main():
     global GLOBAL_PATH
-    #GLOBAL_PATH = r'C:/Users/Polinka/Documents/'
-    GLOBAL_PATH = input('Please enter the folder to do sorting: ')
-    grab_path(GLOBAL_PATH)
+    while True:
+        user_input = input('Do you want to sort current folder? (yes/no) ')
+        if user_input.lower().strip() == 'yes':
+            GLOBAL_PATH = os.getcwd()
+            break
+        elif user_input.lower().strip() == 'no':
+            GLOBAL_PATH = input('Please enter the folder to do sorting: ')
+            break
+        else:
+            print('Please choose correct option.')
+    try:
+        grab_path(GLOBAL_PATH)
+        
+        print('_{:_^155}'.format(''))
 
-    print("______________________________________________________________")
-    print(f"Base directory:\t {GLOBAL_PATH}")
-    print("______________________________________________________________")
-    print(
-        f"Archives:\t {os.listdir(os.path.join(GLOBAL_PATH, folders[0]))}")
-    print(f"Audio:\t\t {os.listdir(os.path.join(GLOBAL_PATH, folders[1]))}")
-    print(
-        f"Documents:\t {os.listdir(os.path.join(GLOBAL_PATH, folders[2]))}")
-    print(f"Images:\t\t {os.listdir(os.path.join(GLOBAL_PATH, folders[3]))}")
-    print(f"Video:\t\t {os.listdir(os.path.join(GLOBAL_PATH, folders[4]))}")
-    print(
-        f"Other files:\t {os.listdir(os.path.join(GLOBAL_PATH, folders[5]))}")
-    print("______________________________________________________________")
+        print(f"Sorted directory:\t {GLOBAL_PATH}")
+        print('_{:_^155}'.format(''))
+        for i in folders:
+            print("{:<10}|{:<144}".format(i.upper(), (' / '.join(
+                os.listdir(os.path.join(GLOBAL_PATH, i))))))
+        print('_{:_^155}'.format(''))
+    except:
+        print('Something went wrong... Your input is incorrect')
 
 
 if __name__ == '__main__':
